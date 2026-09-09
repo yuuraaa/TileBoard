@@ -3,11 +3,12 @@ import { LinkCard } from "./LinkCard";
 
 interface CardRendererProps {
   card: Card;
+  disabled?: boolean;
 }
 
-export function CardRenderer({ card }: CardRendererProps) {
+export function CardRenderer({ card, disabled }: CardRendererProps) {
   if (card.type === "link") {
-    return <LinkCard card={card} />;
+    return <LinkCard card={card} disabled={disabled} />;
   }
 
   return null;

@@ -7,6 +7,7 @@ interface UseConfigResult {
   loading: boolean;
   error: string | null;
   reload: () => void;
+  setConfig: (config: Config) => void;
 }
 
 export function useConfig(): UseConfigResult {
@@ -45,5 +46,5 @@ export function useConfig(): UseConfigResult {
     setReloadToken((token) => token + 1);
   }, []);
 
-  return { config, loading, error, reload };
+  return { config, loading, error, reload, setConfig };
 }
