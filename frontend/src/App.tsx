@@ -15,6 +15,7 @@ import {
 import type { Card } from "backend/schema";
 import { useConfig } from "./hooks/useConfig";
 import { useConfigEditor } from "./hooks/useConfigEditor";
+import { useTheme } from "./hooks/useTheme";
 import { fromDraft } from "./utils/configDraft";
 import { GroupSection } from "./components/GroupSection";
 import { EditableGroupSection } from "./components/EditableGroupSection";
@@ -30,6 +31,7 @@ type CardModalState =
   | { mode: "edit"; groupId: string; cardId: string; card: Card };
 
 function App() {
+  const { theme, toggleTheme } = useTheme();
   const { config, loading, error, reload, setConfig } = useConfig();
   const editor = useConfigEditor({ config, onSaved: setConfig });
   const {
@@ -116,29 +118,41 @@ function App() {
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="mb-0">TileBoard</h1>
-        {!loading && !error && config && (
-          <div className="d-flex gap-2">
-            {isEditing ? (
-              <>
-                <Button
-                  variant="outline-secondary"
-                  onClick={handleCancelEditing}
-                  disabled={saving}
-                >
-                  キャンセル
+        <div className="d-flex gap-2">
+          <Button
+            variant="outline-secondary"
+            onClick={toggleTheme}
+            aria-label="テーマ切り替え"
+          >
+            <i
+              className={`bi ${theme === "dark" ? "bi-sun" : "bi-moon-stars"}`}
+              aria-hidden="true"
+            />
+          </Button>
+          {!loading && !error && config && (
+            <>
+              {isEditing ? (
+                <>
+                  <Button
+                    variant="outline-secondary"
+                    onClick={handleCancelEditing}
+                    disabled={saving}
+                  >
+                    キャンセル
+                  </Button>
+                  <Button variant="primary" onClick={save} disabled={saving}>
+                    {saving ? "保存中..." : "保存"}
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outline-primary" onClick={startEditing}>
+                  <i className="bi bi-pencil me-1" aria-hidden="true" />
+                  編集
                 </Button>
-                <Button variant="primary" onClick={save} disabled={saving}>
-                  {saving ? "保存中..." : "保存"}
-                </Button>
-              </>
-            ) : (
-              <Button variant="outline-primary" onClick={startEditing}>
-                <i className="bi bi-pencil me-1" aria-hidden="true" />
-                編集
-              </Button>
-            )}
-          </div>
-        )}
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {loading && (

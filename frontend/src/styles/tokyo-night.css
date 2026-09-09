@@ -1,0 +1,126 @@
+/* Tokyo Night theme. Palette values follow the folke/tokyonight.nvim
+   "night" (dark mode) and "day" (called "light" here) presets. */
+
+[data-tn-theme="night"] {
+  --bs-body-bg: #1a1b26;
+  --bs-body-bg-rgb: 26, 27, 38;
+  --bs-body-color: #c0caf5;
+  --bs-border-color: #292e42;
+  --bs-border-color-translucent: #292e42;
+  --bs-secondary-bg: #16161e;
+  --bs-tertiary-bg: #1f202e;
+  --bs-secondary-bg-subtle: #292e42;
+  --bs-secondary-color: #565f89;
+  --bs-primary: #7aa2f7;
+  --bs-primary-rgb: 122, 162, 247;
+  --bs-link-color: #7aa2f7;
+  --bs-link-hover-color: #89b4fa;
+  --bs-card-bg: #1f202e;
+  --bs-card-border-color: #292e42;
+  --bs-danger: #f7768e;
+  --bs-danger-rgb: 247, 118, 142;
+  --tn-red: #f7768e;
+  --tn-red-hover: #db4b4b;
+}
+
+[data-tn-theme="light"] {
+  --bs-body-bg: #d5d6db;
+  --bs-body-bg-rgb: 213, 214, 219;
+  --bs-body-color: #343b58;
+  --bs-border-color: #a8aecb;
+  --bs-border-color-translucent: #a8aecb;
+  --bs-secondary-bg: #e1e2e7;
+  --bs-tertiary-bg: #cbccd1;
+  --bs-secondary-bg-subtle: #cbccd1;
+  --bs-secondary-color: #6172b0;
+  --bs-primary: #34548a;
+  --bs-primary-rgb: 52, 84, 138;
+  --bs-link-color: #34548a;
+  --bs-link-hover-color: #2e4c81;
+  --bs-card-bg: #e1e2e7;
+  --bs-card-border-color: #a8aecb;
+  --bs-danger: #c64343;
+  --bs-danger-rgb: 198, 67, 67;
+  --tn-red: #c64343;
+  --tn-red-hover: #a63636;
+}
+
+/* Bootstrap hardcodes button colors per-class rather than deriving them from
+   the root variables above, so each variant needs its own overrides. */
+[data-tn-theme] .btn-primary {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: var(--bs-link-hover-color);
+  --bs-btn-hover-border-color: var(--bs-link-hover-color);
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: var(--bs-link-hover-color);
+  --bs-btn-active-border-color: var(--bs-link-hover-color);
+  --bs-btn-disabled-color: #ffffff;
+  --bs-btn-disabled-bg: var(--bs-primary);
+  --bs-btn-disabled-border-color: var(--bs-primary);
+}
+
+[data-tn-theme] .btn-outline-primary {
+  --bs-btn-color: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: var(--bs-primary);
+  --bs-btn-hover-border-color: var(--bs-primary);
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: var(--bs-primary);
+  --bs-btn-active-border-color: var(--bs-primary);
+  --bs-btn-disabled-color: var(--bs-primary);
+  --bs-btn-disabled-border-color: var(--bs-primary);
+}
+
+[data-tn-theme] .btn-outline-secondary {
+  --bs-btn-color: var(--bs-body-color);
+  --bs-btn-border-color: var(--bs-border-color);
+  --bs-btn-hover-color: var(--bs-body-color);
+  --bs-btn-hover-bg: var(--bs-tertiary-bg);
+  --bs-btn-hover-border-color: var(--bs-border-color);
+  --bs-btn-active-color: var(--bs-body-color);
+  --bs-btn-active-bg: var(--bs-tertiary-bg);
+  --bs-btn-active-border-color: var(--bs-border-color);
+  --bs-btn-disabled-color: var(--bs-secondary-color);
+  --bs-btn-disabled-border-color: var(--bs-border-color);
+}
+
+[data-tn-theme] .btn-danger,
+[data-tn-theme] .btn-outline-danger {
+  --bs-btn-color: var(--tn-red);
+  --bs-btn-border-color: var(--tn-red);
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: var(--tn-red);
+  --bs-btn-hover-border-color: var(--tn-red);
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: var(--tn-red-hover);
+  --bs-btn-active-border-color: var(--tn-red-hover);
+  --bs-btn-disabled-color: var(--tn-red);
+  --bs-btn-disabled-border-color: var(--tn-red);
+}
+
+[data-tn-theme] .btn-danger {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: var(--tn-red);
+  --bs-btn-hover-bg: var(--tn-red-hover);
+  --bs-btn-hover-border-color: var(--tn-red-hover);
+  --bs-btn-disabled-bg: var(--tn-red);
+}
+
+[data-tn-theme] .btn-light {
+  --bs-btn-color: var(--bs-body-color);
+  --bs-btn-bg: var(--bs-tertiary-bg);
+  --bs-btn-border-color: var(--bs-tertiary-bg);
+  --bs-btn-hover-color: var(--bs-body-color);
+  --bs-btn-hover-bg: var(--bs-card-bg);
+  --bs-btn-hover-border-color: var(--bs-border-color);
+  --bs-btn-active-color: var(--bs-body-color);
+  --bs-btn-active-bg: var(--bs-card-bg);
+  --bs-btn-active-border-color: var(--bs-border-color);
+  --bs-btn-disabled-color: var(--bs-secondary-color);
+  --bs-btn-disabled-bg: var(--bs-tertiary-bg);
+  --bs-btn-disabled-border-color: var(--bs-tertiary-bg);
+}
