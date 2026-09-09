@@ -10,7 +10,8 @@
   "dependencies": {
     "@hono/node-server": "^1.13.7",
     "hono": "^4.6.14",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
