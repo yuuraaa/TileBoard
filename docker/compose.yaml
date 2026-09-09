@@ -2,7 +2,7 @@ services:
   dev:
     image: node:22-slim
     working_dir: /app
-    command: sh -c "corepack enable && pnpm install && pnpm dev:backend"
+    command: sh -c "corepack enable && pnpm install && (pnpm dev:backend & pnpm dev:frontend & wait)"
     volumes:
       - ..:/app
       - node_modules_root:/app/node_modules
