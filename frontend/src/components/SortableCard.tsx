@@ -5,6 +5,7 @@ import { CardRenderer } from "./CardRenderer";
 
 interface SortableCardProps {
   id: string;
+  groupId: string;
   card: Card;
   onEdit: () => void;
   onDelete: () => void;
@@ -12,6 +13,7 @@ interface SortableCardProps {
 
 export function SortableCard({
   id,
+  groupId,
   card,
   onEdit,
   onDelete,
@@ -23,7 +25,7 @@ export function SortableCard({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id, data: { type: "card" } });
+  } = useSortable({ id, data: { type: "card", groupId } });
 
   const style = {
     transform: CSS.Transform.toString(transform),

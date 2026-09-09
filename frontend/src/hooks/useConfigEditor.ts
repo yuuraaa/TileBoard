@@ -9,6 +9,7 @@ import {
   findGroupIdByCardId,
   fromDraft,
   moveCard,
+  moveCardToGroup,
   moveGroup,
   removeCard,
   removeGroup,
@@ -39,6 +40,12 @@ interface UseConfigEditorResult {
   updateCardInDraft: (groupId: string, cardId: string, card: Card) => void;
   removeCardFromDraft: (groupId: string, cardId: string) => void;
   reorderCards: (activeId: string, overId: string) => void;
+  moveCardAcrossGroups: (
+    cardId: string,
+    fromGroupId: string,
+    toGroupId: string,
+    beforeCardId?: string,
+  ) => void;
 }
 
 export function useConfigEditor({
@@ -133,6 +140,28 @@ export function useConfigEditor({
     });
   }, []);
 
+  const moveCardAcrossGroups = useCallback(
+    (
+      cardId: string,
+      fromGroupId: string,
+      toGroupId: string,
+      beforeCardId?: string,
+    ) => {
+      setDraft((current) =>
+        current
+          ? moveCardToGroup(
+              current,
+              cardId,
+              fromGroupId,
+              toGroupId,
+              beforeCardId,
+            )
+          : current,
+      );
+    },
+    [],
+  );
+
   return {
     isEditing,
     draft,
@@ -149,5 +178,6 @@ export function useConfigEditor({
     updateCardInDraft,
     removeCardFromDraft,
     reorderCards,
+    moveCardAcrossGroups,
   };
 }

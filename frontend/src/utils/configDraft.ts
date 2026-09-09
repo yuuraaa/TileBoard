@@ -17,8 +17,31 @@ export interface DraftConfig {
   groups: DraftGroup[];
 }
 
+// crypto.randomUUID() はセキュアコンテキスト（HTTPS/localhost）でしか使えないため、
+// LAN内のプレーンHTTPアクセスも想定するこのアプリでは crypto.getRandomValues() で代替する。
+// 生成したIDは編集中のみ使う一時キーでありYAMLへは書き出さないため、暗号学的な強度は不要。
 function newId(): string {
-  return crypto.randomUUID();
+  if (typeof crypto?.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  if (typeof crypto?.getRandomValues === "function") {
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join(
+      "",
+    );
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+
+  return `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+}
+
+// カードが1件も無いグループにもドロップできるよう、カード列コンテナ自体を
+// 別名前空間のドロップ先として登録するための識別子
+export function cardContainerId(groupId: string): string {
+  return `container-${groupId}`;
 }
 
 export function toDraft(config: Config): DraftConfig {
@@ -148,6 +171,43 @@ export function moveCard(
       if (from === -1 || to === -1 || from === to) return group;
 
       return { ...group, cards: arrayMove(group.cards, from, to) };
+    }),
+  };
+}
+
+export function moveCardToGroup(
+  draft: DraftConfig,
+  cardId: string,
+  fromGroupId: string,
+  toGroupId: string,
+  beforeCardId?: string,
+): DraftConfig {
+  if (fromGroupId === toGroupId) return draft;
+
+  const fromGroup = draft.groups.find((group) => group.id === fromGroupId);
+  const entry = fromGroup?.cards.find((card) => card.id === cardId);
+
+  if (!fromGroup || !entry) return draft;
+
+  return {
+    groups: draft.groups.map((group) => {
+      if (group.id === fromGroupId) {
+        return {
+          ...group,
+          cards: group.cards.filter((card) => card.id !== cardId),
+        };
+      }
+
+      if (group.id === toGroupId) {
+        const insertAt = beforeCardId
+          ? group.cards.findIndex((card) => card.id === beforeCardId)
+          : -1;
+        const cards = [...group.cards];
+        cards.splice(insertAt === -1 ? cards.length : insertAt, 0, entry);
+        return { ...group, cards };
+      }
+
+      return group;
     }),
   };
 }

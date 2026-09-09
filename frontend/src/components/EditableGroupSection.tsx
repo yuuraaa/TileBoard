@@ -1,11 +1,12 @@
 import { Col, Row } from "react-bootstrap";
+import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
   rectSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { DraftGroup } from "../utils/configDraft";
+import { cardContainerId, type DraftGroup } from "../utils/configDraft";
 import { SortableCard } from "./SortableCard";
 
 interface EditableGroupSectionProps {
@@ -33,6 +34,11 @@ export function EditableGroupSection({
     transition,
     isDragging,
   } = useSortable({ id: group.id, data: { type: "group" } });
+
+  const { setNodeRef: setDroppableRef } = useDroppable({
+    id: cardContainerId(group.id),
+    data: { type: "container", groupId: group.id },
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -77,11 +83,12 @@ export function EditableGroupSection({
         items={group.cards.map((entry) => entry.id)}
         strategy={rectSortingStrategy}
       >
-        <Row xs={1} sm={2} lg={3} xl={4} className="g-3">
+        <Row ref={setDroppableRef} xs={1} sm={2} lg={3} xl={4} className="g-3">
           {group.cards.map((entry) => (
             <Col key={entry.id}>
               <SortableCard
                 id={entry.id}
+                groupId={group.id}
                 card={entry.card}
                 onEdit={() => onEditCard(entry.id)}
                 onDelete={() => onDeleteCard(entry.id)}
