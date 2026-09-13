@@ -3,13 +3,16 @@ import yaml from "js-yaml";
 import { HttpError } from "./errors.js";
 import { ConfigSchema, type Config } from "./schema.js";
 
+const EMPTY_CONFIG: Config = { groups: [] };
+
 export async function loadConfig(path: string): Promise<Config> {
   let raw: string;
   try {
     raw = await readFile(path, "utf-8");
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      throw new HttpError(404, "設定ファイルが見つかりません");
+      await saveConfig(path, EMPTY_CONFIG);
+      return EMPTY_CONFIG;
     }
     throw error;
   }
